@@ -174,8 +174,8 @@ spec:
                     sh(
                         script: """
                             pip install --upgrade pip
-                            pip install requests 
-                            python release.py --prerelease --name ${BRANCH_NAME}
+                            pip install requests click
+                            python release.py --pre-release --name ${BRANCH_NAME}
                         """
                     )
                 }
