@@ -1,0 +1,60 @@
+[gd_scene load_steps=14 format=3 uid="uid://bu747qr2ac6sj"]
+
+[ext_resource type="Script" path="res://scenes/character/player/player.gd" id="1_td18d"]
+[ext_resource type="Texture2D" uid="uid://crdtn1pecnw0r" path="res://scenes/character/player/player.png" id="1_ui4jr"]
+[ext_resource type="PackedScene" uid="uid://druqe3v4dh84k" path="res://scenes/ability/ability_manager.tscn" id="2_mnc0h"]
+[ext_resource type="PackedScene" uid="uid://cprlunajl2x8s" path="res://scenes/components/health/health_component.tscn" id="2_seq6d"]
+[ext_resource type="PackedScene" uid="uid://53e4nbymiki0" path="res://scenes/state_machine/state_machine.tscn" id="2_shkkm"]
+[ext_resource type="PackedScene" uid="uid://c6v3fp1xbsrjy" path="res://scenes/components/velocity/velocity_component.tscn" id="3_1fiok"]
+[ext_resource type="Script" path="res://scenes/character/player/state/idle.gd" id="3_4cy2k"]
+[ext_resource type="PackedScene" uid="uid://dvxvuqc85c7o6" path="res://scenes/components/movement/player/player_movement_component.tscn" id="3_g7c3l"]
+[ext_resource type="PackedScene" uid="uid://cykkf088brpwm" path="res://scenes/components/hurtbox/hurtbox_component.tscn" id="4_6fvyg"]
+[ext_resource type="Script" path="res://scenes/character/player/state/move.gd" id="4_48e6t"]
+[ext_resource type="Script" path="res://scenes/character/player/state/ability.gd" id="5_8m6ku"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t68ns"]
+radius = 4.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lnnox"]
+radius = 6.0
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+motion_mode = 1
+script = ExtResource("1_td18d")
+
+[node name="StateMachine" parent="." instance=ExtResource("2_shkkm")]
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("3_4cy2k")
+
+[node name="Ability" type="Node" parent="StateMachine"]
+script = ExtResource("5_8m6ku")
+
+[node name="Move" type="Node" parent="StateMachine"]
+script = ExtResource("4_48e6t")
+
+[node name="HealthComponent" parent="." instance=ExtResource("2_seq6d")]
+
+[node name="VelocityComponent" parent="." instance=ExtResource("3_1fiok")]
+max_speed = 250.0
+
+[node name="PlayerMovementComponent" parent="." node_paths=PackedStringArray("velocity_component") instance=ExtResource("3_g7c3l")]
+velocity_component = NodePath("../VelocityComponent")
+
+[node name="AbilityManager" parent="." instance=ExtResource("2_mnc0h")]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("1_ui4jr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_t68ns")
+
+[node name="HurtboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("4_6fvyg")]
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+position = Vector2(0, -7)
+shape = SubResource("CircleShape2D_lnnox")
+debug_color = Color(0.905882, 0, 0.745098, 0.419608)

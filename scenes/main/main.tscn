@@ -1,0 +1,25 @@
+[gd_scene load_steps=7 format=3 uid="uid://c1g27j8o6a43l"]
+
+[ext_resource type="Script" path="res://scenes/main/main.gd" id="1_jel8x"]
+[ext_resource type="PackedScene" uid="uid://be2mthofyrbqv" path="res://scenes/game_state/game_state_manager.tscn" id="2_6hwx1"]
+[ext_resource type="PackedScene" uid="uid://ba5tkkbvt76p" path="res://scenes/ui/ui_manager.tscn" id="3_vlkaw"]
+[ext_resource type="PackedScene" uid="uid://btsarn8jiclmg" path="res://scenes/menu/menu_manager.tscn" id="4_2orsr"]
+[ext_resource type="PackedScene" uid="uid://dpmo4hy0f15f0" path="res://scenes/level/level_manager.tscn" id="5_bkrfv"]
+[ext_resource type="PackedScene" uid="uid://boq3htlj70qsd" path="res://scenes/level/demo_level/demo_level.tscn" id="6_qxmm1"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_jel8x")
+
+[node name="Managers" type="Node" parent="."]
+
+[node name="GameStateManager" parent="Managers" node_paths=PackedStringArray("ui_manager", "menu_manager", "level_manager") instance=ExtResource("2_6hwx1")]
+ui_manager = NodePath("../UiManager")
+menu_manager = NodePath("../MenuManager")
+level_manager = NodePath("../LevelManager")
+
+[node name="UiManager" parent="Managers" instance=ExtResource("3_vlkaw")]
+
+[node name="MenuManager" parent="Managers" instance=ExtResource("4_2orsr")]
+
+[node name="LevelManager" parent="Managers" instance=ExtResource("5_bkrfv")]
+initial_level_to_load = ExtResource("6_qxmm1")

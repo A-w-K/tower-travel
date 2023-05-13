@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bbrkfmjmu3usf"]
+
+[ext_resource type="Script" path="res://test/unit_test_scene.gd" id="1_btpxt"]
+[ext_resource type="PackedScene" uid="uid://53e4nbymiki0" path="res://scenes/state_machine/state_machine.tscn" id="1_cqgu2"]
+[ext_resource type="Script" path="res://scenes/state_machine/state_machine_state.gd" id="2_hx0en"]
+
+[node name="UnitTestScene" type="Node2D"]
+script = ExtResource("1_btpxt")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+
+[node name="StateMachine" parent="CharacterBody2D" instance=ExtResource("1_cqgu2")]
+unique_name_in_owner = true
+
+[node name="StateA" type="Node" parent="CharacterBody2D/StateMachine"]
+script = ExtResource("2_hx0en")
+
+[node name="StateB" type="Node" parent="CharacterBody2D/StateMachine"]
+script = ExtResource("2_hx0en")
+
+[node name="StateMachineEmpty" parent="CharacterBody2D" instance=ExtResource("1_cqgu2")]
+unique_name_in_owner = true

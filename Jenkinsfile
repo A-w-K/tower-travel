@@ -3,54 +3,6 @@
 //
 
 
-// export template which exports no scenes or resources
-// an initial export in a fresh git checkout is required 
-// so the project is initialized, the .godot folder is created
-// and gdunit4 can run 
-export_template_gdunit4='''
-[preset.0]
-
-name="gdunit4"
-platform="Linux/X11"
-runnable=false
-dedicated_server=false
-custom_features=""
-export_filter="resources"
-export_files=PackedStringArray()
-include_filter=""
-exclude_filter=""
-export_path=""
-encryption_include_filters=""
-encryption_exclude_filters=""
-encrypt_pck=false
-encrypt_directory=false
-script_encryption_key=""
-
-[preset.0.options]
-
-custom_template/debug=""
-custom_template/release=""
-debug/export_console_script=1
-binary_format/embed_pck=false
-texture_format/bptc=true
-texture_format/s3tc=true
-texture_format/etc=false
-texture_format/etc2=false
-binary_format/architecture="x86_64"
-ssh_remote_deploy/enabled=false
-ssh_remote_deploy/host="user@host_ip"
-ssh_remote_deploy/port="22"
-ssh_remote_deploy/extra_args_ssh=""
-ssh_remote_deploy/extra_args_scp=""
-ssh_remote_deploy/run_script="#!/usr/bin/env bash
-export DISPLAY=:0
-unzip -o -q \"{temp_dir}/{archive_name}\" -d \"{temp_dir}\"
-\"{temp_dir}/{exe_name}\" {cmd_args}"
-ssh_remote_deploy/cleanup_script="#!/usr/bin/env bash
-kill $(pgrep -x -f \"{temp_dir}/{exe_name} {cmd_args}\")
-rm -rf \"{temp_dir}\""
-'''
-
 // python script to create github release
 github_release_py='''
 import requests
@@ -96,6 +48,18 @@ pipeline {
     options { 
       disableConcurrentBuilds() 
       buildDiscarder logRotator(artifactDaysToKeepStr: '10', artifactNumToKeepStr: '10', daysToKeepStr: '', numToKeepStr: '')
+    }
+    parameters {
+        booleanParam(
+            defaultValue: true,
+            description: 'Run tests',
+            name: 'RUN_TESTS',
+        )
+        booleanParam(
+            defaultValue: false,
+            description: 'Build and export for windows and linux even when not master or tag release?',
+            name: 'BUILD'
+        )
     }
     agent {
         kubernetes {
@@ -152,21 +116,15 @@ spec:
             }
         }
         stage('Test') {
+            when {
+                expression { return params.RUN_TESTS }
+            }
             steps {
                 container('build-container') {
                     sh(
-                        script: 'mv export_presets.cfg export_presets.cfg.original'
-                    )
-                    writeFile(
-                        file: 'export_presets.cfg',
-                        text: export_template_gdunit4,
-                        encoding: 'UTF-8'
-                    )
-                    sh(
                         script: '''
-                            $GODOT_BIN --export-release "gdunit4" /tmp/gdunit4
-                            rm -f /tmp/gdunit4
-                            mv export_presets.cfg.original export_presets.cfg
+                            $GODOT_BIN --export-release "ci-setup" /tmp/gdunit4
+                            rm -rf /tmp/gdunit4
                         '''
                     )
                     sh(
@@ -194,6 +152,7 @@ spec:
                 anyOf {
                     tag "*"
                     branch "main"
+                    expression { return params.BUILD }
                 }
             }
             matrix {
@@ -207,26 +166,27 @@ spec:
                     stage('Build') {
                         steps {
                             container('build-container') {
-                                script {
-                                    def fileName = null
-                                    switch(env.PLATFORM) {
-                                        case "linux":
-                                            fileName = "godot4-demo.linux.bin";
-                                            break;
-                                        case "windows":
-                                            fileName = "godot4-demo.exe";
-                                            break;
-                                        default:
-                                            throw new Exception ("Unknown platform")
+                                lock( 'synchronous-matrix' ) {
+                                    script {
+                                        def fileName = null
+                                        switch(env.PLATFORM) {
+                                            case "linux":
+                                                fileName = "tower-travel.x86_64.bin";
+                                                break;
+                                            case "windows":
+                                                fileName = "tower-travel.exe";
+                                                break;
+                                            default:
+                                                throw new Exception ("Unknown platform")
+                                        }
+                                        sh(
+                                            script: """
+                                                mkdir -p build/\${PLATFORM}
+                                                \$GODOT_BIN --export-release "\${PLATFORM}" build/\${PLATFORM}/${fileName}
+                                            """
+                                        )
                                     }
-                                    sh(
-                                        script: """
-                                            mkdir -p build/\${PLATFORM}
-                                            \$GODOT_BIN --export-release "\${PLATFORM}" build/\${PLATFORM}/${fileName}
-                                        """
-                                    )
                                 }
-
                             }
                         }
                     }

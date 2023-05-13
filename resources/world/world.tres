@@ -1,0 +1,7 @@
+[gd_resource type="Environment" format=3 uid="uid://dlcmbgqvsmrwx"]
+
+[resource]
+fog_enabled = true
+fog_light_color = Color(0.905882, 0, 0.835294, 1)
+fog_light_energy = 1.28
+fog_sun_scatter = 0.18

@@ -1,0 +1,2 @@
+extends AbilityResource
+class_name TeleportAbilityResource

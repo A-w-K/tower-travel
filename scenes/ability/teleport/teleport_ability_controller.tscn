@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm3rm3vdttqgj"]
+
+[ext_resource type="Script" path="res://scenes/ability/teleport/teleport_ability_controller.gd" id="1_si3og"]
+[ext_resource type="PackedScene" uid="uid://efsrkqpbi717" path="res://scenes/ability/teleport/teleport_ability.tscn" id="2_2qx0d"]
+
+[node name="TeleportAbilityController" type="Node"]
+script = ExtResource("1_si3og")
+ability_scene = ExtResource("2_2qx0d")
+ability_id = "teleport"
+ability_name = "Teleport"
+recovery_time = 3.0

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ShieldAbilityResource" load_steps=4 format=3 uid="uid://1e171xn46d8b"]
+
+[ext_resource type="Script" path="res://resources/ability/shield/shield_ability.gd" id="1_45a71"]
+[ext_resource type="PackedScene" uid="uid://brh7i6b6cf6j2" path="res://scenes/ability/shield/shield_ability_controller.tscn" id="1_nik6y"]
+[ext_resource type="Texture2D" uid="uid://do851kd7b8spg" path="res://resources/ability/shield/shield.png" id="2_47q68"]
+
+[resource]
+script = ExtResource("1_45a71")
+shield_duration = 3.0
+shield_count = 2
+shield_radius = Vector2(25, 0)
+shield_speed = 3.0
+id = "shield"
+name = "Shield"
+description = "Summon one or more rotating shields around the player"
+icon = ExtResource("2_47q68")
+ability_controller_scene = ExtResource("1_nik6y")

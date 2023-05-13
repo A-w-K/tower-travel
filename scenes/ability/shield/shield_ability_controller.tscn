@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://brh7i6b6cf6j2"]
+
+[ext_resource type="Script" path="res://scenes/ability/shield/shield_ability_controller.gd" id="1_4mmjm"]
+[ext_resource type="PackedScene" uid="uid://8apagvc7r0sx" path="res://scenes/ability/shield/shield_ability.tscn" id="2_ga73r"]
+
+[node name="ShieldAbilityController" type="Node"]
+script = ExtResource("1_4mmjm")
+ability_scene = ExtResource("2_ga73r")
+ability_id = "shield"
+ability_name = "Shields"
