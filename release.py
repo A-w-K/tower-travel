@@ -33,9 +33,9 @@ def main(name: str, pre_release: bool):
         prerelease=pre_release,
 
     )
-
     response = requests.post(url=releases_url, headers=headers, json=payload)
 
+    # upload builds to release
     assets_url = f'https://uploads.github.com/repos/{owner}/{repo}/releases/{response.json()["id"]}/assets'
     for item in pathlib.Path('build').glob('**/*'):
         if item.is_file():
