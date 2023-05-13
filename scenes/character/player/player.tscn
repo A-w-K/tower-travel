@@ -1,10 +1,10 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=14 format=3 uid="uid://bddk66y4l3cn5"]
 
 [ext_resource type="Script" path="res://scenes/character/player/player.gd" id="1_td18d"]
 [ext_resource type="Texture2D" uid="uid://crdtn1pecnw0r" path="res://scenes/character/player/player.png" id="1_ui4jr"]
 [ext_resource type="PackedScene" uid="uid://druqe3v4dh84k" path="res://scenes/ability/ability_manager.tscn" id="2_mnc0h"]
 [ext_resource type="PackedScene" uid="uid://cprlunajl2x8s" path="res://scenes/components/health/health_component.tscn" id="2_seq6d"]
-[ext_resource type="PackedScene" uid="uid://53e4nbymiki0" path="res://scenes/components/state_machine/state_machine.tscn" id="2_shkkm"]
+[ext_resource type="PackedScene" path="res://scenes/components/state_machine/state_machine.tscn" id="2_shkkm"]
 [ext_resource type="PackedScene" uid="uid://c6v3fp1xbsrjy" path="res://scenes/components/velocity/velocity_component.tscn" id="3_1fiok"]
 [ext_resource type="Script" path="res://scenes/character/player/state/idle.gd" id="3_4cy2k"]
 [ext_resource type="PackedScene" uid="uid://dvxvuqc85c7o6" path="res://scenes/components/movement/player/player_movement_component.tscn" id="3_g7c3l"]
