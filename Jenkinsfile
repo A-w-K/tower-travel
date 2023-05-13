@@ -2,48 +2,6 @@
 // test and build pipeline for tower-travel
 //
 
-
-// python script to create github release
-github_release_py='''
-import requests
-import json
-import os
-import pathlib
-
-# GitHub repository details
-owner = 'sebastianhutter'
-repo = 'godot4-demo'
-
-# GitHub access token with "repo" scope
-access_token = os.getenv('PAT')
-releases_url =  f'https://api.github.com/repos/{owner}/{repo}/releases'
-headers = dict(
-    Authorization=f'Bearer {access_token}'
-)
-
-# Release details
-tag_name = os.getenv('TAG_NAME')
-release_name = tag_name
-
-# create the release
-payload=dict(
-    tag_name=tag_name,
-    name=release_name,
-    generate_release_notes=True,
-)
-response = requests.post(url=releases_url, headers=headers, json=payload)
-
-assets_url = f'https://uploads.github.com/repos/{owner}/{repo}/releases/{response.json()["id"]}/assets'
-for item in pathlib.Path('build').glob('**/*'):
-    if item.is_file():
-        with open(item, "rb") as f:
-            response = requests.post(url=f'{assets_url}?name={item.name}', headers={**headers, **{'Content-Type': 'application/octet-stream'}}, data=f.read()) 
-            if response.status_code == 201:
-                print("File uploaded successfully!")
-            else:
-                print(f"Failed to upload file: {response.text}")
-'''
-
 pipeline {
     options { 
       disableConcurrentBuilds() 
@@ -152,6 +110,8 @@ spec:
                 anyOf {
                     tag "*"
                     branch "main"
+                    branch "rc-*"
+                    branch "dev"
                     expression { return params.BUILD }
                 }
             }
@@ -201,9 +161,9 @@ spec:
                 }
             }
         }
-        stage('Release') {
+        stage('Pre-Release') {
             when {
-                tag "*"
+                tag "rc*"
             }
             environment {
                 GITHUB_PAT = credentials('github-machine-user-pat')
@@ -211,17 +171,32 @@ spec:
             }
             steps {
                 container('github') {
-                    writeFile(
-                        file: 'release.py',
-                        text: github_release_py,
-                        encoding: 'UTF-8'
-                    )
                     sh(
-                        script: '''
+                        script: """
                             pip install --upgrade pip
                             pip install requests 
-                            python release.py
-                        '''
+                            python release.py --prerelease --name ${BRANCH_NAME}
+                        """
+                    )
+                }
+            }
+        }
+        stage('Release') {
+            when {
+                tag "v*"
+            }
+            environment {
+                GITHUB_PAT = credentials('github-machine-user-pat')
+                PAT = "${GITHUB_PAT_PSW}"
+            }
+            steps {
+                container('github') {
+                    sh(
+                        script: """
+                            pip install --upgrade pip
+                            pip install requests click
+                            python release.py --name ${TAG_NAME}
+                        """
                     )
                 }
             }
