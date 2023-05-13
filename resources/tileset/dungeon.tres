@@ -1,9 +1,9 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://drs6elbpcpcd"]
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://drkcksb6r42l5"]
 
-[ext_resource type="Texture2D" uid="uid://b5vgeicbuu53q" path="res://assets/environment/roguelikeDungeon_magenta.png" id="1_42dv0"]
+[ext_resource type="Texture2D" uid="uid://b5vgeicbuu53q" path="res://resources/tileset/roguelikeDungeon_magenta.png" id="1_0uyea"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0kiat"]
-texture = ExtResource("1_42dv0")
+texture = ExtResource("1_0uyea")
 separation = Vector2i(1, 1)
 16:10/0 = 0
 16:10/0/terrain_set = 0

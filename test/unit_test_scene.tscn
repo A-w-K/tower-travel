@@ -1,8 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bbrkfmjmu3usf"]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://test/unit_test_scene.gd" id="1_btpxt"]
-[ext_resource type="PackedScene" uid="uid://53e4nbymiki0" path="res://scenes/state_machine/state_machine.tscn" id="1_cqgu2"]
-[ext_resource type="Script" path="res://scenes/state_machine/state_machine_state.gd" id="2_hx0en"]
+[ext_resource type="PackedScene" path="res://scenes/components/state_machine/state_machine.tscn" id="1_cqgu2"]
+[ext_resource type="Script" path="res://scenes/components/state_machine/state_machine_state.gd" id="2_hx0en"]
 
 [node name="UnitTestScene" type="Node2D"]
 script = ExtResource("1_btpxt")

@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://f0om8bdmi8ne"]
+
+[ext_resource type="Shader" uid="uid://d105oj2pwhn1b" path="res://development/visual_shader/visual_shader.tres" id="1_505da"]
+[ext_resource type="Texture2D" uid="uid://eyobscg1qbmf" path="res://icon.svg" id="1_keabr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f4y3i"]
+shader = ExtResource("1_505da")
+shader_parameter/flash_color = Color(1, 0.156863, 0, 1)
+shader_parameter/flash_lerp = 0.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1hboa"]
+emission_shape = 2
+emission_sphere_radius = 128.0
+particle_flag_disable_z = true
+gravity = Vector3(100, 2.08165e-12, 2.08165e-12)
+orbit_velocity_min = 2.08167e-14
+orbit_velocity_max = 2.08167e-14
+angle_min = -172.8
+angle_max = 198.4
+color = Color(1, 0.407843, 1, 1)
+turbulence_enabled = true
+
+[node name="visual_shader" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_f4y3i")
+texture = ExtResource("1_keabr")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+visible = false
+amount = 30
+process_material = SubResource("ParticleProcessMaterial_1hboa")
+texture = ExtResource("1_keabr")
+lifetime = 38.64
+speed_scale = 8.14
+randomness = 0.41
+trail_enabled = true
+trail_lifetime = 4.07
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+texture = ExtResource("1_keabr")
+emission_shape = 3
+emission_rect_extents = Vector2(75, 10)
+gravity = Vector2(369, 980)
